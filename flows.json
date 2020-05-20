@@ -1,0 +1,538 @@
+[
+    {
+        "id": "1af80ebc.a65381",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "b5898651.5de288",
+        "type": "ui_form",
+        "z": "1af80ebc.a65381",
+        "name": "",
+        "label": "",
+        "group": "3a9c158a.3c9a5a",
+        "order": 0,
+        "width": "14",
+        "height": "4",
+        "options": [
+            {
+                "label": "How can I help you?",
+                "value": "input",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "input": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "cancel",
+        "topic": "",
+        "x": 70,
+        "y": 280,
+        "wires": [
+            [
+                "4edec01.51c584"
+            ]
+        ]
+    },
+    {
+        "id": "4edec01.51c584",
+        "type": "function",
+        "z": "1af80ebc.a65381",
+        "name": "",
+        "func": "msg=\n{\n    discoveryparams:\n    {\n        \"environment_id\":\"system\",\n        \"query\":msg.payload.input\n    }\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 210,
+        "y": 280,
+        "wires": [
+            [
+                "da365195.1a239"
+            ]
+        ]
+    },
+    {
+        "id": "da365195.1a239",
+        "type": "watson-discovery-v1",
+        "z": "1af80ebc.a65381",
+        "name": "Winston Search",
+        "environmentname": "",
+        "environmentId": "system",
+        "collectionId": "news-en",
+        "configurationname": "",
+        "configurationId": "",
+        "language_code": "en",
+        "collection_name": "",
+        "count": "1",
+        "passages": true,
+        "nlp_query": true,
+        "query": "",
+        "filter": "",
+        "aggregation": "",
+        "return": "",
+        "description": "",
+        "size": "LT",
+        "discovery-method": "query",
+        "service-endpoint": "https://api.eu-gb.discovery.watson.cloud.ibm.com/instances/c20bf8b3-f854-487b-a8bf-9a26af30fb56",
+        "x": 380,
+        "y": 200,
+        "wires": [
+            [
+                "d6207e34.3ec78",
+                "226c4fbe.916fc",
+                "571948c0.6a2bf8",
+                "d6ecc6b6.c40a98",
+                "3412e220.99a26e",
+                "b70ad265.ddadf"
+            ]
+        ]
+    },
+    {
+        "id": "d6207e34.3ec78",
+        "type": "function",
+        "z": "1af80ebc.a65381",
+        "name": "text",
+        "func": "msg.payload=msg.search_results.results[0].text\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 610,
+        "y": 40,
+        "wires": [
+            [
+                "48ba3b00.ac2274",
+                "517870c3.e3e0d"
+            ]
+        ]
+    },
+    {
+        "id": "226c4fbe.916fc",
+        "type": "function",
+        "z": "1af80ebc.a65381",
+        "name": "author",
+        "func": "msg.payload=msg.search_results.results[0].author\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 610,
+        "y": 100,
+        "wires": [
+            [
+                "980c8691.f4c698"
+            ]
+        ]
+    },
+    {
+        "id": "571948c0.6a2bf8",
+        "type": "function",
+        "z": "1af80ebc.a65381",
+        "name": "main page url",
+        "func": "msg.payload=msg.search_results.results[0].main_image_url\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 640,
+        "y": 160,
+        "wires": [
+            [
+                "f09e621.40b07a"
+            ]
+        ]
+    },
+    {
+        "id": "d6ecc6b6.c40a98",
+        "type": "function",
+        "z": "1af80ebc.a65381",
+        "name": "url",
+        "func": "msg.payload=msg.search_results.results[0].url\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 612,
+        "y": 220,
+        "wires": [
+            [
+                "b1e77b26.1be078"
+            ]
+        ]
+    },
+    {
+        "id": "3412e220.99a26e",
+        "type": "function",
+        "z": "1af80ebc.a65381",
+        "name": "score",
+        "func": "msg.payload=msg.search_results.results[0].enriched_title.sentiment.document.score\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 613,
+        "y": 278,
+        "wires": [
+            [
+                "cdac54fa.e1ca78"
+            ]
+        ]
+    },
+    {
+        "id": "b70ad265.ddadf",
+        "type": "function",
+        "z": "1af80ebc.a65381",
+        "name": "label",
+        "func": "msg.payload=msg.search_results.results[0].enriched_title.sentiment.document.label\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 612,
+        "y": 341,
+        "wires": [
+            [
+                "1e386837.d90b28"
+            ]
+        ]
+    },
+    {
+        "id": "48ba3b00.ac2274",
+        "type": "ui_text",
+        "z": "1af80ebc.a65381",
+        "group": "3a9c158a.3c9a5a",
+        "order": 1,
+        "width": "14",
+        "height": "2",
+        "name": "",
+        "label": "search result",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 800,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "980c8691.f4c698",
+        "type": "ui_text",
+        "z": "1af80ebc.a65381",
+        "group": "3a9c158a.3c9a5a",
+        "order": 2,
+        "width": "14",
+        "height": "2",
+        "name": "",
+        "label": "author",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 783,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "f09e621.40b07a",
+        "type": "ui_text",
+        "z": "1af80ebc.a65381",
+        "group": "3a9c158a.3c9a5a",
+        "order": 3,
+        "width": "14",
+        "height": "2",
+        "name": "",
+        "label": "main page url",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 816,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "b1e77b26.1be078",
+        "type": "ui_text",
+        "z": "1af80ebc.a65381",
+        "group": "3a9c158a.3c9a5a",
+        "order": 5,
+        "width": "14",
+        "height": "2",
+        "name": "",
+        "label": "url",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 790,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "1e386837.d90b28",
+        "type": "ui_text",
+        "z": "1af80ebc.a65381",
+        "group": "3a9c158a.3c9a5a",
+        "order": 6,
+        "width": "14",
+        "height": "2",
+        "name": "",
+        "label": "label",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 790,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "cdac54fa.e1ca78",
+        "type": "ui_gauge",
+        "z": "1af80ebc.a65381",
+        "name": "",
+        "group": "3a9c158a.3c9a5a",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Sentiment score",
+        "label": "units",
+        "format": "{{value}}",
+        "min": "-2",
+        "max": "2",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 950,
+        "y": 283,
+        "wires": []
+    },
+    {
+        "id": "517870c3.e3e0d",
+        "type": "sentiment",
+        "z": "1af80ebc.a65381",
+        "name": "",
+        "property": "payload",
+        "x": 260,
+        "y": 460,
+        "wires": [
+            [
+                "9fac727d.6cc68",
+                "e240f068.27218",
+                "1e9f46e1.2f9659",
+                "9a5d0f28.4ca07"
+            ]
+        ]
+    },
+    {
+        "id": "9fac727d.6cc68",
+        "type": "debug",
+        "z": "1af80ebc.a65381",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 370,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "e240f068.27218",
+        "type": "function",
+        "z": "1af80ebc.a65381",
+        "name": "sentiment",
+        "func": "msg.payload=msg.sentiment.score;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 480,
+        "y": 420,
+        "wires": [
+            [
+                "23bf5895.462358"
+            ]
+        ]
+    },
+    {
+        "id": "1e9f46e1.2f9659",
+        "type": "function",
+        "z": "1af80ebc.a65381",
+        "name": "positive",
+        "func": "msg.payload=msg.sentiment.positive.length;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 480,
+        "y": 469,
+        "wires": [
+            [
+                "90a472b1.bcaa8"
+            ]
+        ]
+    },
+    {
+        "id": "9a5d0f28.4ca07",
+        "type": "function",
+        "z": "1af80ebc.a65381",
+        "name": "negative",
+        "func": "msg.payload=msg.sentiment.negative.length;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 481,
+        "y": 524,
+        "wires": [
+            [
+                "9d8a49cd.8a5518"
+            ]
+        ]
+    },
+    {
+        "id": "23bf5895.462358",
+        "type": "ui_chart",
+        "z": "1af80ebc.a65381",
+        "name": "",
+        "group": "794b160e.91a5b8",
+        "order": 0,
+        "width": "3",
+        "height": "5",
+        "label": "sentimental score",
+        "chartType": "bar",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 710,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "90a472b1.bcaa8",
+        "type": "ui_chart",
+        "z": "1af80ebc.a65381",
+        "name": "",
+        "group": "794b160e.91a5b8",
+        "order": 1,
+        "width": "3",
+        "height": "5",
+        "label": "positive chart",
+        "chartType": "bar",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 690,
+        "y": 469,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9d8a49cd.8a5518",
+        "type": "ui_chart",
+        "z": "1af80ebc.a65381",
+        "name": "",
+        "group": "794b160e.91a5b8",
+        "order": 2,
+        "width": "3",
+        "height": "5",
+        "label": "negative chart",
+        "chartType": "bar",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "-2",
+        "ymax": "10",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 701,
+        "y": 524,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3a9c158a.3c9a5a",
+        "type": "ui_group",
+        "z": "",
+        "name": "Ask Me Anything",
+        "tab": "b9c1c2a7.bc9f6",
+        "order": 1,
+        "disp": true,
+        "width": "20",
+        "collapse": false
+    },
+    {
+        "id": "794b160e.91a5b8",
+        "type": "ui_group",
+        "z": "",
+        "name": "sentimental analysis",
+        "tab": "b9c1c2a7.bc9f6",
+        "order": 2,
+        "disp": true,
+        "width": "7",
+        "collapse": false
+    },
+    {
+        "id": "b9c1c2a7.bc9f6",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
